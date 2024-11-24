@@ -3,7 +3,27 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - DartBoard
+  - Dart
+  - DartTip
+  - Debugger
+  - QDSUISecondaryButton
+  - QDSUIIcon
+  - QDSUIToggleButton
+  - QDSUISharedThemeColor
+  - QDSUITextSecondaryColor
+  - QDSUIPrimaryButton
+  - QDSUIAccentColor
+  - QDSUIBorderlessButton
+  - QDSUITextInputField
+  - QDSUIDestructiveButton
+  - QDSUISection
+  - QDSUIToggleSwitch
+  - QDSUIToggleCheckboxRadio
+  - QDSUITooltip
+  - QDSUIToggleBorderlessButton
+  - RightHand
   layers:
   - Default
   - TransparentFX

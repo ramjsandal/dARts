@@ -1,10 +1,12 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class CustomSpatialAnchor : MonoBehaviour
 {
+    public TMP_Text debugger;
     public string anchorName = "frame";
     List<OVRSpatialAnchor.UnboundAnchor> _unboundAnchors = new();
 
@@ -14,6 +16,7 @@ public class CustomSpatialAnchor : MonoBehaviour
     }
     public void AddAnchor()
     {
+        debugger.text = "called add anchor";
         OVRSpatialAnchor anchor;
         anchor = transform.gameObject.AddComponent<OVRSpatialAnchor>();
         StartCoroutine(AnchorAdded(anchor));
@@ -21,8 +24,10 @@ public class CustomSpatialAnchor : MonoBehaviour
 
     private IEnumerator AnchorAdded(OVRSpatialAnchor anchor)
     {
+        debugger.text = "called anchor added";
         yield return new WaitUntil(() => anchor.Created && anchor.Localized);
 
+        debugger.text = "made it past the yield return";
         SaveAnchor(anchor);
     }
 
@@ -30,12 +35,21 @@ public class CustomSpatialAnchor : MonoBehaviour
     {
         var result = await anchor.SaveAnchorAsync();
 
-        SaveAnchorToPlayerPrefs(anchor.Uuid.ToString());
+        if (result.Success)
+        {
+            debugger.text = "save anchor succeeded";
+            SaveAnchorToPlayerPrefs(anchor.Uuid.ToString());
+        }
+        else
+        {
+            debugger.text = $"save anchor failed with {result.Status}";
+        }
     }
 
     public void SaveAnchorToPlayerPrefs(string uuidString)
     {
         PlayerPrefs.SetString(anchorName, uuidString);
+        debugger.text = $"saved uuid to anchor: {anchorName}";
     }
 
     public void LoadAnchor()
@@ -47,6 +61,10 @@ public class CustomSpatialAnchor : MonoBehaviour
             uuids[0] = new Guid(uuidString);
 
             LoadAnchorsByUuid(uuids);
+        }
+        else
+        {
+            debugger.text = $"could not find key {anchorName}";
         }
     }
 
@@ -79,6 +97,7 @@ public class CustomSpatialAnchor : MonoBehaviour
                     }
                     else
                     {
+                        debugger.text = $"Localization failed for anchor {unboundAnchor.Uuid}";
                         Debug.LogError($"Localization failed for anchor {unboundAnchor.Uuid}");
                     }
                 }, unboundAnchor);
@@ -86,6 +105,7 @@ public class CustomSpatialAnchor : MonoBehaviour
         }
         else
         {
+            debugger.text = $"Load failed with error {result.Status}.";
             Debug.LogError($"Load failed with error {result.Status}.");
         }
 
@@ -99,6 +119,7 @@ public class CustomSpatialAnchor : MonoBehaviour
             EraseAnchorAsync(anchor);
             Destroy(GetComponent<OVRSpatialAnchor>());
         }
+        debugger.text = "erase got called";
 
     }
     async void EraseAnchorAsync(OVRSpatialAnchor _spatialAnchor)
@@ -111,6 +132,7 @@ public class CustomSpatialAnchor : MonoBehaviour
         }
         else
         {
+            debugger.text = $"Failed to erase anchor {_spatialAnchor.Uuid} with result {result.Status}";
             Debug.LogError($"Failed to erase anchor {_spatialAnchor.Uuid} with result {result.Status}");
         }
     }
