@@ -11,14 +11,19 @@ public class DartTriangle : MonoBehaviour
     private ScoreManager scoreManager;
     private void Start()
     {
-        scoreManager = ScoreManager.Instance; 
+        scoreManager = ScoreManager.Instance;
     }
     private void OnTriggerEnter(Collider other)
     {
         if (other != null && other.CompareTag("DartTip"))
         {
-            scoreManager.AddPoints(points);
-            other.transform.GetComponentInParent<DartBehavior>().FreezeDart();
+            var db = other.transform.GetComponentInParent<DartBehavior>();
+            if (!db.hit)
+            {
+                scoreManager.AddPoints(points);
+                other.transform.GetComponentInParent<DartBehavior>().FreezeDart();
+            }
+
         }
     }
 }

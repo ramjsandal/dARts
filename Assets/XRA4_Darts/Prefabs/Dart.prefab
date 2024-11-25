@@ -357,6 +357,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   forceMultiplier: 20
+  ps: {fileID: 4334674957158808085, guid: a45ce8df729675142b3d7b055d6550d5, type: 3}
   hit: 0
 --- !u!1 &3398546333373494602
 GameObject:

@@ -6,6 +6,7 @@ using UnityEngine;
 public class DartBehavior : MonoBehaviour
 {
     public float forceMultiplier = 20f;
+    public ParticleSystem ps;
     AudioSource source;
     Rigidbody rb;
     OVRInput.Controller rightController = OVRInput.Controller.RTouch;
@@ -40,6 +41,15 @@ public class DartBehavior : MonoBehaviour
     public void PickupDart()
     {
         rb.isKinematic = false;
+        StartCoroutine(Vibrate(1, 1, 1, rightController));
+    }
+
+    IEnumerator Vibrate(float freq, float amp, float duration, OVRInput.Controller controller)
+    {
+
+        OVRInput.SetControllerVibration(freq, amp, controller);
+        yield return new WaitForSeconds(duration);
+        OVRInput.SetControllerVibration(0, 0, controller);
     }
 
     void DestroyDart()
@@ -53,6 +63,8 @@ public class DartBehavior : MonoBehaviour
     public void FreezeDart()
     {
         hit = true;
+        var ob = Instantiate(ps, transform.position, Quaternion.identity);
+        Destroy(ob, 1f);
         var con = RigidbodyConstraints.FreezePosition | RigidbodyConstraints.FreezeRotation;
         rb.constraints = con;
     }
