@@ -9,7 +9,6 @@ public class DartSpawner : MonoBehaviour
     public GameObject dart;
     public GameObject dartHolder;
     public Transform spawnlocation;
-    TMP_Text debugger;
     void Update()
     {
         int numDarts = GameObject.FindGameObjectsWithTag("Dart").Where(a => !a.GetComponent<DartBehavior>().hit).Count();
@@ -18,7 +17,6 @@ public class DartSpawner : MonoBehaviour
             SpawnDart();
         }
 
-        debugger = GameObject.FindGameObjectWithTag("Debugger").GetComponent<TMP_Text>();
     }
 
     void SpawnDart()
