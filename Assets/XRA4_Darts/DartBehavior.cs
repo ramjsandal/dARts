@@ -37,6 +37,11 @@ public class DartBehavior : MonoBehaviour
 
     }
 
+    public void PickupDart()
+    {
+        rb.isKinematic = false;
+    }
+
     void DestroyDart()
     {
         if (!hit)

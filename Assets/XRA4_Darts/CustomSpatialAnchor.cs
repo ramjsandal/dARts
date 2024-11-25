@@ -3,11 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Playables;
 
 public class CustomSpatialAnchor : MonoBehaviour
 {
     public TMP_Text debugger;
     public string anchorName = "frame";
+    public AudioSource startDiagloue;
     List<OVRSpatialAnchor.UnboundAnchor> _unboundAnchors = new();
 
     private void Start()
@@ -39,6 +41,7 @@ public class CustomSpatialAnchor : MonoBehaviour
         {
             debugger.text = "save anchor succeeded";
             SaveAnchorToPlayerPrefs(anchor.Uuid.ToString());
+            ScoreManager.Instance.playable = true;
         }
         else
         {
@@ -61,10 +64,12 @@ public class CustomSpatialAnchor : MonoBehaviour
             uuids[0] = new Guid(uuidString);
 
             LoadAnchorsByUuid(uuids);
+            ScoreManager.Instance.playable = true;
         }
         else
         {
-            debugger.text = $"could not find key {anchorName}";
+            startDiagloue.Play();
+            ScoreManager.Instance.playable = false;
         }
     }
 
